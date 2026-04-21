@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shubham Devalpalliwar | DevOps &amp; Cloud Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg:    #060910;
+      --bg2:   #0c1017;
+      --card:  #111822;
+      --border:rgba(255,255,255,0.07);
+      --green: #00d084;
+      --orange:#f97316;
+      --blue:  #38bdf8;
+      --red:   #f43f5e;
+      --text:  #e2e8f0;
+      --muted: #64748b;
+      --grad:  linear-gradient(135deg,#00d084,#38bdf8);
+      --grad2: linear-gradient(135deg,#f97316,#f43f5e);
+      --mono:  'JetBrains Mono',monospace;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+    /* ── CURSOR ── */
+    .cursor{width:10px;height:10px;background:var(--green);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .12s;mix-blend-mode:screen}
+    .cursor-ring{width:38px;height:38px;border:1.5px solid rgba(0,208,132,.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all .22s ease}
+
+    /* ── SCANLINES ── */
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px)}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5%;background:rgba(6,9,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:padding .3s}
+    nav.scrolled{padding:.7rem 5%}
+    .logo{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--green);letter-spacing:.05em}
+    .logo span{color:var(--muted)}
+    .nav-links{display:flex;gap:1.8rem;list-style:none}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-family:var(--mono);font-weight:500;letter-spacing:.04em;transition:color .25s;position:relative}
+    .nav-links a::before{content:'./';color:var(--green);opacity:0;transition:opacity .25s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-links a:hover::before{opacity:1}
+    .nav-hire{padding:.45rem 1.1rem;border-radius:8px;font-size:.78rem;font-family:var(--mono);font-weight:600;background:rgba(0,208,132,.12);color:var(--green);border:1px solid rgba(0,208,132,.3);text-decoration:none;transition:all .3s}
+    .nav-hire:hover{background:rgba(0,208,132,.22);transform:translateY(-2px)}
+
+    /* ── HERO ── */
+    #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:6rem 5% 4rem}
+    .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,208,132,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,208,132,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
+    .orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbFloat 10s ease-in-out infinite}
+    .orb1{width:500px;height:500px;background:rgba(0,208,132,.18);top:-150px;left:-150px}
+    .orb2{width:400px;height:400px;background:rgba(56,189,248,.15);bottom:-100px;right:-100px;animation-delay:-4s}
+    .orb3{width:250px;height:250px;background:rgba(249,115,22,.1);top:40%;right:20%;animation-delay:-7s}
+    @keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-25px) scale(1.04)}}
+
+    .hero-content{position:relative;z-index:1;text-align:center;max-width:960px}
+
+    .hero-terminal{display:inline-flex;align-items:center;gap:.6rem;background:rgba(0,208,132,.07);border:1px solid rgba(0,208,132,.2);border-radius:8px;padding:.5rem 1.2rem;margin-bottom:2rem;font-family:var(--mono);font-size:.82rem;color:var(--green);animation:fadeDown .6s ease both}
+    .hero-terminal .prompt{color:var(--muted)}
+    .hero-terminal .cmd-text{color:var(--text)}
+    .cursor-blink{width:8px;height:16px;background:var(--green);animation:blink .8s step-end infinite;display:inline-block;vertical-align:middle}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+    h1.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.6rem,7vw,5.8rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;animation:fadeUp .8s ease .1s both}
+    .hero-title .name{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-title .role{color:var(--muted);font-weight:300}
+
+    .hero-tags{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin:1.6rem 0;animation:fadeUp .8s ease .2s both}
+    .hero-tag{padding:.3rem .9rem;border-radius:6px;font-size:.76rem;font-family:var(--mono);font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .3s;cursor:pointer}
+    .hero-tag:hover{border-color:rgba(0,208,132,.4);color:var(--green);transform:translateY(-2px) scale(1.05)}
+    .hero-tag i{margin-right:.35rem}
+
+    /* ── TECH MODAL ── */
+    .modal-overlay{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(6,9,16,.85);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:#0d1117;border:1px solid rgba(0,208,132,.25);border-radius:20px;width:100%;max-width:760px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(30px) scale(.97);transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 60px rgba(0,208,132,.12)}
+    .modal-overlay.open .modal{transform:translateY(0) scale(1)}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.6rem;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+    .modal-head-left{display:flex;align-items:center;gap:1rem}
+    .modal-tech-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+    .modal-tech-name{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700}
+    .modal-tech-desc{font-size:.78rem;color:var(--muted);font-family:var(--mono);margin-top:.15rem}
+    .modal-close{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s}
+    .modal-close:hover{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.4);color:var(--red)}
+    .modal-body{overflow-y:auto;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:1.4rem}
+    .modal-body::-webkit-scrollbar{width:4px}
+    .modal-body::-webkit-scrollbar-track{background:transparent}
+    .modal-body::-webkit-scrollbar-thumb{background:rgba(0,208,132,.3);border-radius:2px}
+    .cheat-section-title{font-family:var(--mono);font-size:.72rem;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+    .cheat-section-title::after{content:'';flex:1;height:1px;background:rgba(0,208,132,.15)}
+    .cmd-list{display:flex;flex-direction:column;gap:.5rem}
+    .cmd-row{display:grid;grid-template-columns:1fr 1.4fr;gap:1rem;align-items:start;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;transition:border-color .2s;cursor:default}
+    .cmd-row:hover{border-color:rgba(0,208,132,.25)}
+    .cmd-code{font-family:var(--mono);font-size:.78rem;color:var(--green);background:rgba(0,208,132,.07);padding:.3rem .6rem;border-radius:6px;word-break:break-all;line-height:1.5}
+    .cmd-explain{font-size:.8rem;color:var(--muted);line-height:1.5}
+    .copy-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.75rem;font-family:var(--mono);padding:.2rem .5rem;border-radius:4px;transition:all .2s;margin-top:.3rem;display:flex;align-items:center;gap:.3rem}
+    .copy-btn:hover{color:var(--green);background:rgba(0,208,132,.08)}
+    .modal-tip{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:var(--orange);font-family:var(--mono);line-height:1.6}
+    .modal-tip strong{color:var(--text)}
+
+    .hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .3s both}
+    .btn{padding:.8rem 1.8rem;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem}
+    .btn-green{background:var(--grad);color:#000;box-shadow:0 0 30px rgba(0,208,132,.3)}
+    .btn-green:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(0,208,132,.5)}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .btn-ghost:hover{background:var(--card);transform:translateY(-3px);border-color:rgba(0,208,132,.3)}
+
+    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--muted);font-size:.72rem;font-family:var(--mono);animation:fadeUp 1s ease .9s both}
+    .scroll-line{width:1px;height:48px;background:linear-gradient(var(--green),transparent);animation:scanDown 2s ease infinite}
+    @keyframes scanDown{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ── SECTIONS ── */
+    section{padding:6rem 5%}
+    .section-header{text-align:center;margin-bottom:3.5rem}
+    .section-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem 1rem;border-radius:6px;background:rgba(0,208,132,.08);border:1px solid rgba(0,208,132,.2);font-size:.75rem;font-family:var(--mono);color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem}
+    .section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.7rem);font-weight:700;letter-spacing:-.02em}
+    .section-line{width:50px;height:2px;background:var(--grad);margin:.8rem auto 0;border-radius:2px}
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* ── ABOUT ── */
+    #about{background:var(--bg2)}
+    .about-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto}
+    .terminal-box{background:#0d1117;border:1px solid rgba(0,208,132,.2);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.8rem;box-shadow:0 0 40px rgba(0,208,132,.08)}
+    .terminal-bar{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;background:#161b22;border-bottom:1px solid rgba(255,255,255,.06)}
+    .tb-dot{width:12px;height:12px;border-radius:50%}
+    .tb-title{color:var(--muted);font-size:.72rem;margin-left:.3rem}
+    .terminal-body{padding:1.2rem 1.4rem;line-height:2}
+    .t-prompt{color:var(--green)}
+    .t-cmd{color:var(--blue)}
+    .t-out{color:var(--muted)}
+    .t-key{color:var(--orange)}
+    .t-val{color:var(--text)}
+    .t-comment{color:#3d4b5c}
+    .about-text h2{font-family:'Space Grotesk',sans-serif;font-size:1.85rem;font-weight:700;margin-bottom:.8rem}
+    .about-text p{color:var(--muted);line-height:1.85;margin-bottom:.9rem;font-size:.93rem}
+    .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.8rem}
+    .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;transition:all .3s}
+    .stat:hover{transform:translateY(-5px);border-color:rgba(0,208,132,.35)}
+    .stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-label{font-size:.72rem;color:var(--muted);margin-top:.2rem;font-family:var(--mono)}
+
+    /* ── PIPELINE ── */
+    #pipeline{background:var(--bg);overflow:hidden}
+    .pipe-track{max-width:1000px;margin:0 auto;position:relative;display:flex;align-items:center;justify-content:space-between;padding:2rem 0}
+    .pipe-track::before{content:'';position:absolute;top:50%;left:5%;right:5%;height:2px;background:linear-gradient(90deg,var(--green),var(--blue),var(--orange),var(--red));transform:translateY(-50%);z-index:0}
+    .pipe-step{display:flex;flex-direction:column;align-items:center;gap:.6rem;position:relative;z-index:1}
+    .pipe-node{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:2px solid transparent;transition:all .4s;animation:nodePulse 3s ease-in-out infinite}
+    .pipe-step:nth-child(1) .pipe-node{background:rgba(0,208,132,.1);border-color:rgba(0,208,132,.4);animation-delay:0s}
+    .pipe-step:nth-child(2) .pipe-node{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.4);animation-delay:.4s}
+    .pipe-step:nth-child(3) .pipe-node{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.4);animation-delay:.8s}
+    .pipe-step:nth-child(4) .pipe-node{background:rgba(168,85,247,.1);border-color:rgba(168,85,247,.4);animation-delay:1.2s}
+    .pipe-step:nth-child(5) .pipe-node{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.4);animation-delay:1.6s}
+    .pipe-step:nth-child(6) .pipe-node{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.4);animation-delay:2s}
+    @keyframes nodePulse{0%,100%{transform:scale(1);box-shadow:none}50%{transform:scale(1.08);box-shadow:0 0 20px currentColor}}
+    .pipe-label{font-family:var(--mono);font-size:.7rem;color:var(--muted);text-align:center}
+    .pipe-label strong{display:block;color:var(--text);font-size:.78rem;margin-bottom:.2rem}
+
+    /* ── SKILLS ── */
+    #skills{background:var(--bg2)}
+    .skills-container{max-width:1100px;margin:0 auto}
+    .skills-tabs{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem}
+    .tab-btn{padding:.5rem 1.2rem;border-radius:8px;font-size:.8rem;font-family:var(--mono);font-weight:600;cursor:pointer;transition:all .3s;background:var(--card);color:var(--muted);border:1px solid var(--border)}
+    .tab-btn.active{background:rgba(0,208,132,.12);color:var(--green);border-color:rgba(0,208,132,.35)}
+    .skills-panel{display:none}
+    .skills-panel.active{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem}
+    .skill-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;transition:all .3s;position:relative;overflow:hidden}
+    .skill-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+    .skill-card:hover{transform:translateY(-6px);border-color:rgba(0,208,132,.3)}
+    .skill-card:hover::after{transform:scaleX(1)}
+    .skill-head{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem}
+    .skill-icon{width:42px;height:42px;border-radius:10px;background:rgba(0,208,132,.1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .skill-name{font-weight:600;font-size:.93rem}
+    .skill-sub{font-size:.73rem;color:var(--muted);font-family:var(--mono);margin-top:.1rem}
+    .bar-wrap{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+    .bar{height:100%;border-radius:3px;background:var(--grad);width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+    .bar-pct{font-size:.73rem;color:var(--muted);text-align:right;margin-top:.35rem;font-family:var(--mono)}
+
+    /* ── TECH BADGES ── */
+    #stack{background:var(--bg)}
+    .badges-wrap{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;max-width:900px;margin:0 auto}
+    .badge{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:8px;background:var(--card);border:1px solid var(--border);font-family:var(--mono);font-size:.76rem;color:var(--muted);transition:all .3s;cursor:default}
+    .badge:hover{transform:translateY(-4px) scale(1.04);border-color:rgba(0,208,132,.35);color:var(--text)}
+
+    /* ── PROJECTS ── */
+    #projects{background:var(--bg2)}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.4rem;max-width:1100px;margin:0 auto}
+    .proj-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .4s}
+    .proj-card:hover{transform:translateY(-8px);border-color:rgba(0,208,132,.35);box-shadow:0 25px 50px rgba(0,0,0,.5)}
+    .proj-header{height:170px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.5rem;overflow:hidden}
+    .proj-header .ph-bg{position:absolute;inset:0;opacity:.12}
+    .proj-header .ph-grid{position:absolute;inset:0;opacity:.2;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:20px 20px}
+    .proj-header .ph-icon{position:relative;z-index:1;filter:drop-shadow(0 4px 15px rgba(0,0,0,.5))}
+    .proj-status{position:absolute;top:.8rem;right:.8rem;padding:.25rem .7rem;border-radius:100px;font-size:.68rem;font-family:var(--mono);font-weight:600;display:flex;align-items:center;gap:.35rem}
+    .proj-status.live{background:rgba(0,208,132,.15);color:var(--green);border:1px solid rgba(0,208,132,.3)}
+    .proj-status.live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+    .proj-body{padding:1.4rem}
+    .proj-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem}
+    .proj-tag{padding:.2rem .6rem;border-radius:5px;font-size:.68rem;font-family:var(--mono);font-weight:600;background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.2)}
+    .proj-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+    .proj-desc{color:var(--muted);font-size:.875rem;line-height:1.65;margin-bottom:1.2rem}
+    .proj-metrics{display:flex;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap}
+    .proj-metric{font-family:var(--mono);font-size:.7rem;color:var(--green);background:rgba(0,208,132,.06);padding:.2rem .6rem;border-radius:5px}
+    .proj-links{display:flex;gap:.7rem}
+    .proj-link{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;text-decoration:none;transition:all .3s}
+    .proj-link.code{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border)}
+    .proj-link.demo{background:var(--grad);color:#000}
+    .proj-link:hover{transform:translateY(-2px)}
+
+    /* ── EXPERIENCE ── */
+    #experience{background:var(--bg)}
+    .timeline{max-width:820px;margin:0 auto;position:relative}
+    .timeline::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(var(--green),var(--blue),var(--orange))}
+    .tl-item{display:flex;gap:2rem;margin-bottom:2.5rem;opacity:0;transform:translateX(-28px);transition:all .6s ease}
+    .tl-item.visible{opacity:1;transform:translateX(0)}
+    .tl-dot{width:46px;height:46px;border-radius:12px;background:var(--card);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;position:relative;z-index:1;transition:all .3s}
+    .tl-item:hover .tl-dot{background:rgba(0,208,132,.1);box-shadow:0 0 20px rgba(0,208,132,.3)}
+    .tl-body{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;flex:1;transition:all .3s}
+    .tl-body:hover{border-color:rgba(0,208,132,.3);transform:translateX(5px)}
+    .tl-date{font-family:var(--mono);font-size:.75rem;color:var(--blue);font-weight:600;margin-bottom:.3rem}
+    .tl-role{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700}
+    .tl-company{color:var(--green);font-size:.85rem;margin-bottom:.7rem;font-family:var(--mono)}
+    .tl-desc{color:var(--muted);font-size:.875rem;line-height:1.65}
+    .tl-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem}
+    .tl-chip{padding:.2rem .6rem;border-radius:5px;font-size:.68rem;font-family:var(--mono);background:rgba(0,208,132,.07);color:var(--green);border:1px solid rgba(0,208,132,.18)}
+
+    /* ── CERTS ── */
+    #certs{background:var(--bg2)}
+    .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;max-width:1000px;margin:0 auto}
+    .cert-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;display:flex;align-items:center;gap:1.2rem;transition:all .3s}
+    .cert-card:hover{transform:translateY(-5px);border-color:rgba(249,115,22,.35)}
+    .cert-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+    .cert-name{font-weight:600;font-size:.93rem;margin-bottom:.2rem}
+    .cert-issuer{font-size:.76rem;color:var(--muted);font-family:var(--mono)}
+    .cert-year{font-size:.7rem;color:var(--orange);font-family:var(--mono);margin-top:.3rem}
+
+    /* ── EDUCATION ── */
+    #education{background:var(--bg)}
+    .edu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;max-width:1000px;margin:0 auto}
+    .edu-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;transition:all .3s}
+    .edu-card:hover{transform:translateY(-5px);border-color:rgba(56,189,248,.35)}
+    .edu-year{font-family:var(--mono);font-size:.72rem;color:var(--blue);font-weight:600;margin-bottom:.4rem}
+    .edu-degree{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.3rem}
+    .edu-school{font-size:.85rem;color:var(--muted)}
+
+    /* ── LANGUAGES ── */
+    #languages{background:var(--bg2)}
+    .lang-wrap{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;max-width:700px;margin:0 auto}
+    .lang-pill{padding:.6rem 1.8rem;border-radius:100px;background:var(--card);border:1px solid var(--border);font-family:var(--mono);font-size:.85rem;color:var(--text);transition:all .3s}
+    .lang-pill:hover{border-color:rgba(0,208,132,.4);color:var(--green);transform:translateY(-3px)}
+
+    /* ── CONTACT ── */
+    #contact{background:var(--bg)}
+    .contact-wrap{max-width:680px;margin:0 auto}
+    .contact-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;position:relative;overflow:hidden;text-align:center}
+    .contact-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(0,208,132,.07) 0%,transparent 70%);pointer-events:none}
+    .contact-card p{color:var(--muted);margin-bottom:2rem;line-height:1.75;position:relative}
+    .contact-links{display:flex;justify-content:center;gap:.9rem;flex-wrap:wrap;position:relative}
+    .c-link{display:flex;align-items:center;gap:.55rem;padding:.75rem 1.4rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:.875rem;transition:all .3s}
+    .c-link.email{background:var(--grad);color:#000}
+    .c-link.github{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--border)}
+    .c-link.linkedin{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.2)}
+    .c-link.phone{background:rgba(249,115,22,.1);color:var(--orange);border:1px solid rgba(249,115,22,.2)}
+    .c-link:hover{transform:translateY(-4px) scale(1.03)}
+
+    /* ── LOGO WRAP ── */
+    .logo-wrap{display:flex;align-items:center;gap:.6rem;cursor:pointer;user-select:none}
+    .logo-wrap:hover .logo-text span{color:var(--text)}
+    .logo-text{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--green);letter-spacing:.05em}
+    .logo-text span{color:var(--muted);transition:color .3s}
+    .inf-logo{flex-shrink:0;overflow:visible}
+    .logo-hint{font-family:var(--mono);font-size:.6rem;color:var(--muted);opacity:0;transition:opacity .3s;white-space:nowrap}
+    .logo-wrap:hover .logo-hint{opacity:1}
+
+    /* ── DEVOPS CYCLE MODAL ── */
+    .devops-overlay{position:fixed;inset:0;z-index:5100;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(4,7,14,.92);backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .3s}
+    .devops-overlay.open{opacity:1;pointer-events:all}
+    .devops-box{background:#0a0f1a;border:1px solid rgba(0,208,132,.2);border-radius:22px;width:100%;max-width:860px;max-height:92vh;overflow-y:auto;transform:translateY(24px) scale(.97);transition:transform .38s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 80px rgba(0,208,132,.1)}
+    .devops-box::-webkit-scrollbar{width:4px}
+    .devops-box::-webkit-scrollbar-thumb{background:rgba(0,208,132,.3);border-radius:2px}
+    .devops-overlay.open .devops-box{transform:translateY(0) scale(1)}
+    .devops-head{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid rgba(255,255,255,.06)}
+    .devops-head-title{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700}
+    .devops-head-sub{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:.2rem}
+    .devops-close-btn{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .devops-close-btn:hover{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.4);color:var(--red)}
+    .devops-svg-wrap{padding:1.2rem 1.4rem;background:rgba(0,0,0,.2)}
+    .devops-cycle-svg{width:100%;height:auto;display:block}
+    .devops-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;padding:1.4rem 1.8rem}
+    @media(max-width:600px){.devops-cards{grid-template-columns:repeat(2,1fr)}}
+    .dv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.9rem;transition:all .25s;cursor:default}
+    .dv-card:hover{transform:translateY(-3px)}
+    .dv-card.dev{border-top:2px solid #38bdf8}
+    .dv-card.ops{border-top:2px solid #00d084}
+    .dv-card-icon{font-size:1.4rem;margin-bottom:.4rem}
+    .dv-card-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:.3rem}
+    .dv-card.dev .dv-card-name{color:#38bdf8}
+    .dv-card.ops .dv-card-name{color:#00d084}
+    .dv-card-desc{font-size:.74rem;color:var(--muted);line-height:1.55;margin-bottom:.5rem}
+    .dv-tools{display:flex;flex-wrap:wrap;gap:.3rem}
+    .dv-tool{font-family:var(--mono);font-size:.62rem;padding:.15rem .45rem;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted)}
+
+    /* ── FOOTER ── */
+    footer{text-align:center;padding:2rem 5%;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;font-family:var(--mono)}
+    footer .accent{color:var(--green)}
+
+    /* ── PARTICLES ── */
+    #particles{position:fixed;top:0;left:0;pointer-events:none;z-index:0;opacity:.4}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .about-grid{grid-template-columns:1fr}
+      .nav-links,.nav-hire{display:none}
+      .pipe-track{flex-direction:column;gap:1.5rem}
+      .pipe-track::before{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="particles"></canvas>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <div class="logo-wrap" id="logoTrigger" title="Click — DevOps SDLC Cycle">
+    <svg class="inf-logo" viewBox="0 0 58 28" width="46" height="22" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ig" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#00d084"/>
+        </linearGradient>
+        <filter id="iglow" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="1.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <path id="infLogoPath"
+        d="M29,14 C32,7 44,7 44,14 C44,21 32,21 29,14 C26,7 14,7 14,14 C14,21 26,21 29,14"
+        fill="none" stroke="url(#ig)" stroke-width="2.2" stroke-linecap="round"/>
+      <circle r="3" fill="#00d084" filter="url(#iglow)">
+        <animateMotion dur="3s" repeatCount="indefinite">
+          <mpath href="#infLogoPath"/>
+        </animateMotion>
+      </circle>
+      <circle r="1.4" fill="white" opacity=".9">
+        <animateMotion dur="3s" repeatCount="indefinite">
+          <mpath href="#infLogoPath"/>
+        </animateMotion>
+      </circle>
+    </svg>
+    <div>
+      <div class="logo-text">&gt;_ <span>shubham</span></div>
+      <div class="logo-hint">click · devops cycle</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#hero">home</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#certs">certs</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <a href="mailto:shubhamdevallpaliwar1996@gmail.com" class="nav-hire">hire me</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="hero-content">
+    <div class="hero-terminal">
+      <span class="prompt">~$</span>
+      <span class="cmd-text" id="typedCmd"></span>
+      <span class="cursor-blink"></span>
+    </div>
+    <h1 class="hero-title">
+      <span class="name">Shubham Devalpalliwar</span><br/>
+      <span class="role">DevOps &amp; Cloud Engineer</span>
+    </h1>
+    <div class="hero-tags">
+      <span class="hero-tag" data-tech="docker"><i class="fab fa-docker"></i>Docker</span>
+      <span class="hero-tag" data-tech="kubernetes"><i class="fas fa-dharmachakra"></i>Kubernetes</span>
+      <span class="hero-tag" data-tech="jenkins"><i class="fab fa-jenkins"></i>Jenkins</span>
+      <span class="hero-tag" data-tech="terraform"><i class="fas fa-layer-group"></i>Terraform</span>
+      <span class="hero-tag" data-tech="aws"><i class="fab fa-aws"></i>AWS</span>
+      <span class="hero-tag" data-tech="gcp"><i class="fab fa-google"></i>GCP</span>
+      <span class="hero-tag" data-tech="linux"><i class="fab fa-linux"></i>Linux</span>
+      <span class="hero-tag" data-tech="sonarqube"><i class="fas fa-shield-alt"></i>SonarQube</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-green"><i class="fas fa-terminal"></i> View Projects</a>
+      <a href="#contact" class="btn btn-ghost"><i class="fas fa-envelope"></i> Get In Touch</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-user"></i> About Me</div>
+    <h2 class="section-title">The Engineer Behind the Pipeline</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="terminal-box reveal">
+      <div class="terminal-bar">
+        <span class="tb-dot" style="background:#f43f5e"></span>
+        <span class="tb-dot" style="background:#f59e0b"></span>
+        <span class="tb-dot" style="background:#22c55e"></span>
+        <span class="tb-title">whoami.sh</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">~$</span> <span class="t-cmd">cat profile.json</span></div>
+        <div class="t-comment"># ────────────────────────────────</div>
+        <div><span class="t-key">"name"</span><span class="t-out">:</span> <span class="t-val">"Shubham Devalpalliwar"</span></div>
+        <div><span class="t-key">"role"</span><span class="t-out">:</span> <span class="t-val">"DevOps &amp; Cloud Engineer"</span></div>
+        <div><span class="t-key">"company"</span><span class="t-out">:</span> <span class="t-val">"Infosys Private Ltd"</span></div>
+        <div><span class="t-key">"client"</span><span class="t-out">:</span> <span class="t-val">"Broadcom Inc."</span></div>
+        <div><span class="t-key">"experience"</span><span class="t-out">:</span> <span class="t-val">"3+ years"</span></div>
+        <div><span class="t-key">"clouds"</span><span class="t-out">:</span> <span class="t-val">["AWS", "GCP"]</span></div>
+        <div class="t-comment"># ────────────────────────────────</div>
+        <div><span class="t-key">"certs"</span><span class="t-out">: [</span></div>
+        <div>&nbsp;&nbsp;<span class="t-val">"AWS Cloud Practitioner"</span><span class="t-out">,</span></div>
+        <div>&nbsp;&nbsp;<span class="t-val">"GCP Associate Cloud Engineer"</span><span class="t-out">,</span></div>
+        <div>&nbsp;&nbsp;<span class="t-val">"Terraform Associate 003"</span><span class="t-out">,</span></div>
+        <div>&nbsp;&nbsp;<span class="t-val">"GitHub Foundation"</span></div>
+        <div><span class="t-out">]</span></div>
+        <div class="t-comment"># ────────────────────────────────</div>
+        <div><span class="t-prompt">~$</span> <span class="cursor-blink"></span></div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h2>Shubham<br/><span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">DevOps &amp; Cloud Engineer</span></h2>
+      <p>
+        Technology Analyst at Infosys Private Ltd, working on-site for Broadcom Inc. — with
+        3+ years of hands-on experience in DevOps and Cloud Infrastructure (AWS &amp; GCP),
+        specialising in CI/CD automation and Infrastructure as Code.
+      </p>
+      <p>
+        Skilled in containerisation, Kubernetes orchestration, and cloud security compliance.
+        Proven track record of reducing deployment time by 50% and improving system reliability
+        through intelligent automation using Terraform, Terragrunt, and Ansible.
+      </p>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num" data-count="3" data-suffix="+">0</div>
+          <div class="stat-label">yrs_exp</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="50">0</div>
+          <div class="stat-label">deploy_↓%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-count="40">0</div>
+          <div class="stat-label">manual_↓%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CI/CD PIPELINE ── -->
+<section id="pipeline">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-code-branch"></i> CI/CD</div>
+    <h2 class="section-title">The DevOps Pipeline</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="pipe-track reveal">
+    <div class="pipe-step">
+      <div class="pipe-node">💻</div>
+      <div class="pipe-label"><strong>Code</strong>Git / GitHub</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-node">🔨</div>
+      <div class="pipe-label"><strong>Build</strong>Jenkins</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-node">🔍</div>
+      <div class="pipe-label"><strong>Scan</strong>SonarQube</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-node">🐳</div>
+      <div class="pipe-label"><strong>Package</strong>Docker + GCR</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-node">⚙️</div>
+      <div class="pipe-label"><strong>Deploy</strong>Helm / kubectl</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-node">📊</div>
+      <div class="pipe-label"><strong>Monitor</strong>Prometheus / CW</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-cogs"></i> Expertise</div>
+    <h2 class="section-title">Skills &amp; Tools</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-container">
+    <div class="skills-tabs reveal">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-cicd')">CI/CD</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-cloud')">Cloud</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-container')">Containers</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-iac')">IaC &amp; Scripting</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-monitor')">Monitoring</button>
+    </div>
+
+    <div class="skills-panel active" id="tab-cicd">
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🔧</div><div><div class="skill-name">Jenkins</div><div class="skill-sub">declarative pipelines</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="92"></div></div><div class="bar-pct">92%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🐙</div><div><div class="skill-name">GitHub / GitHub Actions</div><div class="skill-sub">workflows &amp; CI</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="88"></div></div><div class="bar-pct">88%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🔍</div><div><div class="skill-name">SonarQube</div><div class="skill-sub">code quality &amp; security scan</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="85"></div></div><div class="bar-pct">85%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">📦</div><div><div class="skill-name">Nexus / Artifact Registry</div><div class="skill-sub">artefact management</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="80"></div></div><div class="bar-pct">80%</div>
+      </div>
+    </div>
+
+    <div class="skills-panel" id="tab-cloud">
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">☁️</div><div><div class="skill-name">AWS</div><div class="skill-sub">EC2, VPC, S3, CloudWatch, IAM</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="88"></div></div><div class="bar-pct">88%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🌍</div><div><div class="skill-name">GCP</div><div class="skill-sub">GKE, GCR, Artifact Registry</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="85"></div></div><div class="bar-pct">85%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🔒</div><div><div class="skill-name">Cloud Security</div><div class="skill-sub">VPC, subnets, LB, Qualys</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="82"></div></div><div class="bar-pct">82%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">⚖️</div><div><div class="skill-name">Compliance</div><div class="skill-sub">vulnerability &amp; P1/P2 RCA</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="78"></div></div><div class="bar-pct">78%</div>
+      </div>
+    </div>
+
+    <div class="skills-panel" id="tab-container">
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🐳</div><div><div class="skill-name">Docker</div><div class="skill-sub">build, push, containerise apps</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="94"></div></div><div class="bar-pct">94%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">⚙️</div><div><div class="skill-name">Kubernetes</div><div class="skill-sub">manifests, auto-heal, auto-scale</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="88"></div></div><div class="bar-pct">88%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">⛵</div><div><div class="skill-name">Helm</div><div class="skill-sub">charts &amp; releases</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="84"></div></div><div class="bar-pct">84%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🖥️</div><div><div class="skill-name">kubectl</div><div class="skill-sub">cluster operations</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="90"></div></div><div class="bar-pct">90%</div>
+      </div>
+    </div>
+
+    <div class="skills-panel" id="tab-iac">
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🏗️</div><div><div class="skill-name">Terraform</div><div class="skill-sub">modules, state, workspaces</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="92"></div></div><div class="bar-pct">92%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🔩</div><div><div class="skill-name">Terragrunt</div><div class="skill-sub">DRY IaC wrapper</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="85"></div></div><div class="bar-pct">85%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">📜</div><div><div class="skill-name">Ansible</div><div class="skill-sub">server config &amp; deployments</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="86"></div></div><div class="bar-pct">86%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🐍</div><div><div class="skill-name">Python / Shell / YAML</div><div class="skill-sub">scripting &amp; automation</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="88"></div></div><div class="bar-pct">88%</div>
+      </div>
+    </div>
+
+    <div class="skills-panel" id="tab-monitor">
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🔥</div><div><div class="skill-name">Prometheus</div><div class="skill-sub">metrics &amp; alerting</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="85"></div></div><div class="bar-pct">85%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">📈</div><div><div class="skill-name">Grafana</div><div class="skill-sub">dashboards &amp; visualisation</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="86"></div></div><div class="bar-pct">86%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">☁️</div><div><div class="skill-name">CloudWatch</div><div class="skill-sub">AWS metrics &amp; logs</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="84"></div></div><div class="bar-pct">84%</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-head"><div class="skill-icon">🛡️</div><div><div class="skill-name">Qualys</div><div class="skill-sub">vulnerability assessments</div></div></div>
+        <div class="bar-wrap"><div class="bar" data-width="75"></div></div><div class="bar-pct">75%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TECH STACK ── -->
+<section id="stack">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-layer-group"></i> Stack</div>
+    <h2 class="section-title">Full Tech Arsenal</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="badges-wrap reveal">
+    <div class="badge" style="color:#2496ed"><i class="fab fa-docker"></i> Docker</div>
+    <div class="badge" style="color:#326ce5"><i class="fas fa-dharmachakra"></i> Kubernetes</div>
+    <div class="badge" style="color:#f9a825"><i class="fab fa-jenkins"></i> Jenkins</div>
+    <div class="badge" style="color:#7b42bc"><i class="fas fa-layer-group"></i> Terraform</div>
+    <div class="badge" style="color:#7b42bc"><i class="fas fa-cube"></i> Terragrunt</div>
+    <div class="badge" style="color:#ee0000"><i class="fab fa-redhat"></i> Ansible</div>
+    <div class="badge" style="color:#ff9900"><i class="fab fa-aws"></i> AWS</div>
+    <div class="badge" style="color:#4285f4"><i class="fab fa-google"></i> GCP</div>
+    <div class="badge" style="color:#0075a8"><i class="fas fa-ship"></i> Helm</div>
+    <div class="badge" style="color:#e6522c"><i class="fas fa-fire"></i> Prometheus</div>
+    <div class="badge" style="color:#f46800"><i class="fas fa-chart-bar"></i> Grafana</div>
+    <div class="badge" style="color:#ff9900"><i class="fas fa-eye"></i> CloudWatch</div>
+    <div class="badge" style="color:#2088ff"><i class="fab fa-github"></i> GitHub Actions</div>
+    <div class="badge" style="color:#cb3837"><i class="fas fa-shield-alt"></i> SonarQube</div>
+    <div class="badge" style="color:#3aa551"><i class="fas fa-box"></i> Nexus</div>
+    <div class="badge" style="color:#4ade80"><i class="fab fa-python"></i> Python</div>
+    <div class="badge" style="color:#89e051"><i class="fab fa-linux"></i> Linux (Ubuntu/RHEL/Rocky)</div>
+    <div class="badge" style="color:#f05133"><i class="fab fa-git-alt"></i> Git</div>
+    <div class="badge" style="color:#ffca28"><i class="fas fa-terminal"></i> Shell Scripting</div>
+    <div class="badge" style="color:#cb171e"><i class="fas fa-file-code"></i> YAML</div>
+    <div class="badge" style="color:#ff6d5a"><i class="fas fa-bug"></i> Qualys</div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-code"></i> Work</div>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+
+    <div class="proj-card reveal">
+      <div class="proj-header">
+        <div class="ph-bg" style="background:linear-gradient(135deg,#00d084,#38bdf8)"></div>
+        <div class="ph-grid"></div>
+        <span class="proj-status live">LIVE</span>
+        <span class="ph-icon">🔄</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">Jenkins</span><span class="proj-tag">GitHub</span><span class="proj-tag">Docker</span><span class="proj-tag">SonarQube</span></div>
+        <div class="proj-title">CI/CD Pipeline Automation</div>
+        <p class="proj-desc">Designed and implemented end-to-end CI/CD pipelines at Infosys (Broadcom Inc.) using Jenkins and GitHub, with SonarQube code quality gates and automated Docker image pushes to GCR/Artifact Registry.</p>
+        <div class="proj-metrics">
+          <span class="proj-metric">↓ 50% deploy time</span>
+          <span class="proj-metric">automated gates</span>
+          <span class="proj-metric">zero manual push</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link code"><i class="fab fa-github"></i> Code</a>
+          <a href="#" class="proj-link demo"><i class="fas fa-terminal"></i> Docs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-header">
+        <div class="ph-bg" style="background:linear-gradient(135deg,#f97316,#f43f5e)"></div>
+        <div class="ph-grid"></div>
+        <span class="proj-status live">LIVE</span>
+        <span class="ph-icon">🏗️</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">Terraform</span><span class="proj-tag">Terragrunt</span><span class="proj-tag">AWS</span><span class="proj-tag">GCP</span></div>
+        <div class="proj-title">IaC Cloud Provisioning Framework</div>
+        <p class="proj-desc">Implemented DRY Infrastructure as Code using Terraform and Terragrunt to provision and manage cloud resources on AWS and GCP, including VPC, subnets, and load balancers, reducing manual effort by 40%.</p>
+        <div class="proj-metrics">
+          <span class="proj-metric">↓ 40% manual effort</span>
+          <span class="proj-metric">AWS + GCP</span>
+          <span class="proj-metric">reusable modules</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link code"><i class="fab fa-github"></i> Code</a>
+          <a href="#" class="proj-link demo"><i class="fas fa-terminal"></i> Docs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-header">
+        <div class="ph-bg" style="background:linear-gradient(135deg,#326ce5,#00d084)"></div>
+        <div class="ph-grid"></div>
+        <span class="proj-status live">LIVE</span>
+        <span class="ph-icon">⚙️</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">Kubernetes</span><span class="proj-tag">Helm</span><span class="proj-tag">Docker</span><span class="proj-tag">GKE</span></div>
+        <div class="proj-title">Kubernetes Auto-Scaling Platform</div>
+        <p class="proj-desc">Updated and maintained Kubernetes manifests for auto-healing and auto-scaling across GKE and EKS clusters. Deployed updates with Helm and kubectl; containerised apps pushed to GCR and Artifact Registry.</p>
+        <div class="proj-metrics">
+          <span class="proj-metric">auto-heal enabled</span>
+          <span class="proj-metric">HPA configured</span>
+          <span class="proj-metric">0 manual restarts</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link code"><i class="fab fa-github"></i> Code</a>
+          <a href="#" class="proj-link demo"><i class="fas fa-terminal"></i> Docs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-header">
+        <div class="ph-bg" style="background:linear-gradient(135deg,#e6522c,#f59e0b)"></div>
+        <div class="ph-grid"></div>
+        <span class="proj-status live">LIVE</span>
+        <span class="ph-icon">📊</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">Prometheus</span><span class="proj-tag">Grafana</span><span class="proj-tag">CloudWatch</span><span class="proj-tag">Qualys</span></div>
+        <div class="proj-title">Observability &amp; Security Stack</div>
+        <p class="proj-desc">Built full-stack monitoring using Prometheus, Grafana, and AWS CloudWatch. Conducted vulnerability assessments with Qualys and implemented compliance standards. Resolved P1/P2 incidents with root cause analysis.</p>
+        <div class="proj-metrics">
+          <span class="proj-metric">P1/P2 RCA</span>
+          <span class="proj-metric">compliance ready</span>
+          <span class="proj-metric">real-time alerts</span>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link code"><i class="fab fa-github"></i> Code</a>
+          <a href="#" class="proj-link demo"><i class="fas fa-terminal"></i> Docs</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-briefcase"></i> Journey</div>
+    <h2 class="section-title">Professional Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">🏢</div>
+      <div class="tl-body">
+        <div class="tl-date">July 2022 — Present</div>
+        <div class="tl-role">Technology Analyst</div>
+        <div class="tl-company">Infosys Private Ltd &nbsp;·&nbsp; Client: Broadcom Inc.</div>
+        <div class="tl-desc">
+          Implemented IaC using Terraform/Terragrunt reducing manual effort by 40%. Automated server config with Ansible. Designed CI/CD pipelines with Jenkins &amp; GitHub cutting deploy time by 50%. Integrated SonarQube for quality gates. Containerised apps with Docker and pushed to GCR/Artifact Registry. Managed K8s manifests for auto-healing and auto-scaling via Helm and kubectl. Managed secure AWS/GCP infrastructure (VPC, subnets, LB). Conducted Qualys vulnerability assessments and resolved P1/P2 incidents.
+        </div>
+        <div class="tl-chips">
+          <span class="tl-chip">Jenkins</span><span class="tl-chip">Terraform</span><span class="tl-chip">Terragrunt</span><span class="tl-chip">Ansible</span><span class="tl-chip">Docker</span><span class="tl-chip">Kubernetes</span><span class="tl-chip">Helm</span><span class="tl-chip">AWS</span><span class="tl-chip">GCP</span><span class="tl-chip">SonarQube</span><span class="tl-chip">Prometheus</span><span class="tl-chip">Grafana</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICATIONS ── -->
+<section id="certs">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-certificate"></i> Certs</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card reveal">
+      <div class="cert-icon" style="background:rgba(255,153,0,.1)">☁️</div>
+      <div>
+        <div class="cert-name">AWS Certified Cloud Practitioner</div>
+        <div class="cert-issuer">Amazon Web Services</div>
+        <div class="cert-year">CLF-C01</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon" style="background:rgba(66,133,244,.1)">🌍</div>
+      <div>
+        <div class="cert-name">GCP Associate Cloud Engineer</div>
+        <div class="cert-issuer">Google Cloud Platform</div>
+        <div class="cert-year">Associate Level</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon" style="background:rgba(123,66,188,.1)">🏗️</div>
+      <div>
+        <div class="cert-name">Terraform Associate</div>
+        <div class="cert-issuer">HashiCorp</div>
+        <div class="cert-year">003</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon" style="background:rgba(36,41,47,.4)">🐙</div>
+      <div>
+        <div class="cert-name">GitHub Foundation</div>
+        <div class="cert-issuer">GitHub</div>
+        <div class="cert-year">Foundation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-graduation-cap"></i> Education</div>
+    <h2 class="section-title">Academic Background</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-year">2019</div>
+      <div class="edu-degree">Bachelor of Engineering (Mechanical)</div>
+      <div class="edu-school">P.R. Pote College of Engineering, Amravati</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-year">2015</div>
+      <div class="edu-degree">HSC (Higher Secondary)</div>
+      <div class="edu-school">Bharat Junior College, Hinganghat</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-year">2013</div>
+      <div class="edu-degree">SSC (Secondary School)</div>
+      <div class="edu-school">G.B.M.M High School, Hinganghat</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LANGUAGES ── -->
+<section id="languages">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-language"></i> Languages</div>
+    <h2 class="section-title">Languages Known</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="lang-wrap reveal">
+    <div class="lang-pill">🇬🇧 English</div>
+    <div class="lang-pill">🇮🇳 Hindi</div>
+    <div class="lang-pill">🇮🇳 Telugu</div>
+    <div class="lang-pill">🇮🇳 Marathi</div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-satellite-dish"></i> Contact</div>
+    <h2 class="section-title">Let's Ship Something Great</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-wrap reveal">
+    <div class="contact-card">
+      <p>
+        Looking to build reliable, automated cloud infrastructure? I'm open to new challenges
+        and interesting DevOps problems. Drop me a message — pipelines don't build themselves.
+        (Well, sometimes they do.)
+      </p>
+      <div class="contact-links">
+        <a href="mailto:shubhamdevallpaliwar1996@gmail.com" class="c-link email"><i class="fas fa-envelope"></i> Email Me</a>
+        <a href="tel:+919665980403" class="c-link phone"><i class="fas fa-phone"></i> +91 9665980403</a>
+        <a href="https://github.com/" class="c-link github" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://linkedin.com/" class="c-link linkedin" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>built &amp; deployed by <span class="accent">shubham devalpalliwar</span> &nbsp;·&nbsp; <span class="accent">infosys</span> &nbsp;·&nbsp; broadcom &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; <span style="color:var(--muted)">all systems operational</span> <span class="accent">✓</span></p>
+</footer>
+
+<!-- ── DEVOPS SDLC CYCLE MODAL ── -->
+<div class="devops-overlay" id="devopsOverlay">
+  <div class="devops-box">
+    <div class="devops-head">
+      <div>
+        <div class="devops-head-title">♾️ DevOps SDLC Cycle</div>
+        <div class="devops-head-sub">Continuous Integration &amp; Continuous Delivery — the infinite loop</div>
+      </div>
+      <button class="devops-close-btn" id="devopsClose"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- ANIMATED SVG CYCLE -->
+    <div class="devops-svg-wrap">
+      <svg viewBox="0 0 700 300" class="devops-cycle-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="dgMain" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8"/>
+            <stop offset="50%" stop-color="#00d084"/>
+            <stop offset="100%" stop-color="#38bdf8"/>
+          </linearGradient>
+          <radialGradient id="dgDevBg" cx="35%" cy="50%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity=".07"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="dgOpsBg" cx="65%" cy="50%">
+            <stop offset="0%" stop-color="#00d084" stop-opacity=".07"/>
+            <stop offset="100%" stop-color="#00d084" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="dgGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="dgNodeGlow" x="-35%" y="-35%" width="170%" height="170%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <pattern id="dgGrid" width="35" height="35" patternUnits="userSpaceOnUse">
+            <path d="M35 0L0 0 0 35" fill="none" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
+          </pattern>
+        </defs>
+
+        <!-- Grid bg -->
+        <rect width="700" height="300" fill="url(#dgGrid)" rx="10"/>
+
+        <!-- Loop glows -->
+        <ellipse cx="245" cy="155" rx="160" ry="100" fill="url(#dgDevBg)"/>
+        <ellipse cx="455" cy="155" rx="160" ry="100" fill="url(#dgOpsBg)"/>
+
+        <!-- DEV / OPS labels -->
+        <rect x="188" y="14" width="114" height="26" rx="6" fill="rgba(56,189,248,.1)" stroke="rgba(56,189,248,.25)" stroke-width="1"/>
+        <text x="245" y="32" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3">DEV</text>
+        <rect x="398" y="14" width="114" height="26" rx="6" fill="rgba(0,208,132,.1)" stroke="rgba(0,208,132,.25)" stroke-width="1"/>
+        <text x="455" y="32" text-anchor="middle" fill="#00d084" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing="3">OPS</text>
+
+        <!-- Main infinity path -->
+        <path id="dgPath"
+          d="M350,155 C390,75 520,75 520,155 C520,235 390,235 350,155 C310,75 180,75 180,155 C180,235 310,235 350,155"
+          fill="none" stroke="url(#dgMain)" stroke-width="2.8" stroke-linecap="round" opacity=".65"/>
+
+        <!-- ──── STAGE NODES ──── -->
+
+        <!-- 1 PLAN (top-left) -->
+        <circle cx="248" cy="98" r="15" fill="rgba(56,189,248,.12)" stroke="#38bdf8" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <text x="248" y="103" text-anchor="middle" font-size="14" dominant-baseline="middle">🗓</text>
+        <text x="248" y="74" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">PLAN</text>
+
+        <!-- 2 CODE (leftmost) -->
+        <circle cx="180" cy="155" r="15" fill="rgba(56,189,248,.12)" stroke="#38bdf8" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="2.7s" repeatCount="indefinite" begin=".3s"/>
+        </circle>
+        <text x="180" y="160" text-anchor="middle" font-size="14" dominant-baseline="middle">💻</text>
+        <text x="180" y="180" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">CODE</text>
+
+        <!-- 3 BUILD (bottom-left) -->
+        <circle cx="248" cy="212" r="15" fill="rgba(56,189,248,.12)" stroke="#38bdf8" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="2.9s" repeatCount="indefinite" begin=".6s"/>
+        </circle>
+        <text x="248" y="217" text-anchor="middle" font-size="14" dominant-baseline="middle">🔨</text>
+        <text x="248" y="237" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">BUILD</text>
+
+        <!-- 4 TEST (inner-left) -->
+        <circle cx="314" cy="155" r="15" fill="rgba(56,189,248,.12)" stroke="#38bdf8" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="3.1s" repeatCount="indefinite" begin=".9s"/>
+        </circle>
+        <text x="314" y="160" text-anchor="middle" font-size="14" dominant-baseline="middle">🧪</text>
+        <text x="296" y="138" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">TEST</text>
+
+        <!-- center pulse -->
+        <circle cx="350" cy="155" r="4" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1">
+          <animate attributeName="r" values="4;9;4" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values=".9;.2;.9" dur="2s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- 5 RELEASE (inner-right) -->
+        <circle cx="386" cy="155" r="15" fill="rgba(0,208,132,.12)" stroke="#00d084" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="3.3s" repeatCount="indefinite" begin="1.2s"/>
+        </circle>
+        <text x="386" y="160" text-anchor="middle" font-size="14" dominant-baseline="middle">📦</text>
+        <text x="404" y="138" text-anchor="middle" fill="#00d084" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">RELEASE</text>
+
+        <!-- 6 DEPLOY (top-right) -->
+        <circle cx="452" cy="98" r="15" fill="rgba(0,208,132,.12)" stroke="#00d084" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="3.5s" repeatCount="indefinite" begin="1.5s"/>
+        </circle>
+        <text x="452" y="103" text-anchor="middle" font-size="14" dominant-baseline="middle">🚀</text>
+        <text x="452" y="74" text-anchor="middle" fill="#00d084" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">DEPLOY</text>
+
+        <!-- 7 OPERATE (rightmost) -->
+        <circle cx="520" cy="155" r="15" fill="rgba(0,208,132,.12)" stroke="#00d084" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="3.7s" repeatCount="indefinite" begin="1.8s"/>
+        </circle>
+        <text x="520" y="160" text-anchor="middle" font-size="14" dominant-baseline="middle">⚙️</text>
+        <text x="520" y="180" text-anchor="middle" fill="#00d084" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">OPERATE</text>
+
+        <!-- 8 MONITOR (bottom-right) -->
+        <circle cx="452" cy="212" r="15" fill="rgba(0,208,132,.12)" stroke="#00d084" stroke-width="1.5" filter="url(#dgNodeGlow)">
+          <animate attributeName="r" values="15;17;15" dur="3.9s" repeatCount="indefinite" begin="2.1s"/>
+        </circle>
+        <text x="452" y="217" text-anchor="middle" font-size="14" dominant-baseline="middle">📊</text>
+        <text x="452" y="237" text-anchor="middle" fill="#00d084" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">MONITOR</text>
+
+        <!-- ──── TRAVELING DOT (3 layers) ──── -->
+        <circle r="10" fill="#00d084" opacity=".18" filter="url(#dgGlow)">
+          <animateMotion dur="8s" repeatCount="indefinite"><mpath href="#dgPath"/></animateMotion>
+        </circle>
+        <circle r="5.5" fill="#00d084">
+          <animateMotion dur="8s" repeatCount="indefinite"><mpath href="#dgPath"/></animateMotion>
+          <animate attributeName="fill" values="#00d084;#38bdf8;#00d084" dur="8s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="2.2" fill="white" opacity=".95">
+          <animateMotion dur="8s" repeatCount="indefinite"><mpath href="#dgPath"/></animateMotion>
+        </circle>
+      </svg>
+    </div>
+
+    <!-- STAGE DESCRIPTION CARDS -->
+    <div class="devops-cards">
+      <div class="dv-card dev">
+        <div class="dv-card-icon">🗓</div>
+        <div class="dv-card-name">Plan</div>
+        <div class="dv-card-desc">Define requirements, sprints &amp; roadmap</div>
+        <div class="dv-tools"><span class="dv-tool">Jira</span><span class="dv-tool">Confluence</span><span class="dv-tool">Git Issues</span></div>
+      </div>
+      <div class="dv-card dev">
+        <div class="dv-card-icon">💻</div>
+        <div class="dv-card-name">Code</div>
+        <div class="dv-card-desc">Write, review &amp; merge source code</div>
+        <div class="dv-tools"><span class="dv-tool">Git</span><span class="dv-tool">GitHub</span><span class="dv-tool">VS Code</span></div>
+      </div>
+      <div class="dv-card dev">
+        <div class="dv-card-icon">🔨</div>
+        <div class="dv-card-name">Build</div>
+        <div class="dv-card-desc">Compile, lint &amp; package artefacts</div>
+        <div class="dv-tools"><span class="dv-tool">Maven</span><span class="dv-tool">Docker</span><span class="dv-tool">npm</span></div>
+      </div>
+      <div class="dv-card dev">
+        <div class="dv-card-icon">🧪</div>
+        <div class="dv-card-name">Test</div>
+        <div class="dv-card-desc">Unit, integration &amp; security tests</div>
+        <div class="dv-tools"><span class="dv-tool">SonarQube</span><span class="dv-tool">JUnit</span><span class="dv-tool">pytest</span></div>
+      </div>
+      <div class="dv-card ops">
+        <div class="dv-card-icon">📦</div>
+        <div class="dv-card-name">Release</div>
+        <div class="dv-card-desc">Version, tag &amp; push to registry</div>
+        <div class="dv-tools"><span class="dv-tool">Jenkins</span><span class="dv-tool">Nexus</span><span class="dv-tool">GCR</span></div>
+      </div>
+      <div class="dv-card ops">
+        <div class="dv-card-icon">🚀</div>
+        <div class="dv-card-name">Deploy</div>
+        <div class="dv-card-desc">Deploy to target environments</div>
+        <div class="dv-tools"><span class="dv-tool">Kubernetes</span><span class="dv-tool">Helm</span><span class="dv-tool">Ansible</span></div>
+      </div>
+      <div class="dv-card ops">
+        <div class="dv-card-icon">⚙️</div>
+        <div class="dv-card-name">Operate</div>
+        <div class="dv-card-desc">Provision &amp; scale infrastructure</div>
+        <div class="dv-tools"><span class="dv-tool">Terraform</span><span class="dv-tool">AWS</span><span class="dv-tool">GCP</span></div>
+      </div>
+      <div class="dv-card ops">
+        <div class="dv-card-icon">📊</div>
+        <div class="dv-card-name">Monitor</div>
+        <div class="dv-card-desc">Observe metrics, logs &amp; alerts</div>
+        <div class="dv-tools"><span class="dv-tool">Prometheus</span><span class="dv-tool">Grafana</span><span class="dv-tool">CloudWatch</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TECH CHEAT-SHEET MODAL ── -->
+<div class="modal-overlay" id="techModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <div class="modal-tech-icon" id="modalIcon"></div>
+        <div>
+          <div class="modal-tech-name" id="modalName"></div>
+          <div class="modal-tech-desc" id="modalDesc"></div>
+        </div>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ──
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx-5+'px';cur.style.top=my-5+'px';});
+(function loopRing(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx-19+'px';ring.style.top=ry-19+'px';requestAnimationFrame(loopRing);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='scale(2.5)';ring.style.transform='scale(1.6)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='scale(1)';ring.style.transform='scale(1)';});
+});
+
+// ── PARTICLES ──
+const cv=document.getElementById('particles'),cx=cv.getContext('2d');
+cv.width=innerWidth;cv.height=innerHeight;
+window.addEventListener('resize',()=>{cv.width=innerWidth;cv.height=innerHeight;});
+const pts=Array.from({length:60},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.5+.5}));
+function animPts(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>cv.width)p.vx*=-1;
+    if(p.y<0||p.y>cv.height)p.vy*=-1;
+    cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fillStyle='rgba(0,208,132,.5)';cx.fill();
+    pts.forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<110){cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(q.x,q.y);cx.strokeStyle=`rgba(0,208,132,${.12*(1-d/110)})`;cx.lineWidth=.5;cx.stroke();}});
+  });
+  requestAnimationFrame(animPts);
+}
+animPts();
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
+
+// ── REVEAL ──
+const rObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>rObs.observe(el));
+
+// ── TIMELINE ──
+const tObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.15});
+document.querySelectorAll('.tl-item').forEach(el=>tObs.observe(el));
+
+// ── SKILL BARS ──
+const bObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.bar').forEach(b=>b.style.width=b.dataset.width+'%');}),{threshold:.25});
+document.querySelectorAll('.skill-card').forEach(c=>bObs.observe(c));
+
+// ── COUNT UP ──
+const cObs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting)e.target.querySelectorAll('.stat-num').forEach(el=>{
+    const t=+el.dataset.count,suffix=el.dataset.suffix||'%';let n=0;
+    const s=()=>{n=Math.min(n+Math.ceil(t/40),t);el.textContent=n+suffix;if(n<t)requestAnimationFrame(s);};s();
+  });
+}),{threshold:.4});
+document.querySelectorAll('.about-stats').forEach(el=>cObs.observe(el));
+
+// ── ACTIVE NAV ──
+window.addEventListener('scroll',()=>{
+  const pos=scrollY+200;
+  document.querySelectorAll('section[id]').forEach(s=>{
+    const a=document.querySelector(`.nav-links a[href="#${s.id}"]`);
+    if(!a)return;
+    if(s.offsetTop<=pos&&s.offsetTop+s.offsetHeight>pos){document.querySelectorAll('.nav-links a').forEach(x=>x.style.color='');a.style.color='var(--green)';}
+  });
+});
+
+// ── TAB SWITCHER ──
+function switchTab(btn,id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.skills-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel=document.getElementById(id);
+  panel.classList.add('active');
+  panel.querySelectorAll('.bar').forEach(b=>{b.style.width=0;setTimeout(()=>b.style.width=b.dataset.width+'%',50);});
+}
+
+// ── DEVOPS CYCLE MODAL ──
+const devopsOverlay = document.getElementById('devopsOverlay');
+const devopsClose   = document.getElementById('devopsClose');
+const logoTrigger   = document.getElementById('logoTrigger');
+function openDevops()  { devopsOverlay.classList.add('open');  document.body.style.overflow='hidden'; }
+function closeDevops() { devopsOverlay.classList.remove('open'); document.body.style.overflow=''; }
+logoTrigger.addEventListener('click', openDevops);
+devopsClose.addEventListener('click', closeDevops);
+devopsOverlay.addEventListener('click', e => { if(e.target===devopsOverlay) closeDevops(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDevops(); });
+
+// ── TECH CHEAT-SHEET DATA ──
+const techData = {
+  docker: {
+    icon: '🐳', color: 'rgba(36,150,237,.15)', name: 'Docker',
+    desc: 'Containerisation platform — build, ship, run anywhere',
+    tip: '💡 Tip: Always use multi-stage builds to keep final images lean. Never run containers as root in production.',
+    sections: [
+      { title: 'Images', cmds: [
+        { cmd: 'docker build -t name:tag .', exp: 'Build image from Dockerfile in current dir' },
+        { cmd: 'docker pull nginx:latest', exp: 'Pull image from Docker Hub' },
+        { cmd: 'docker images', exp: 'List all local images' },
+        { cmd: 'docker rmi image_id', exp: 'Remove a local image' },
+        { cmd: 'docker tag src:tag dst:tag', exp: 'Tag image for registry push' },
+        { cmd: 'docker push user/repo:tag', exp: 'Push image to registry (GCR/DockerHub)' },
+      ]},
+      { title: 'Containers', cmds: [
+        { cmd: 'docker run -d -p 8080:80 nginx', exp: 'Run container detached, map port 8080→80' },
+        { cmd: 'docker run -it ubuntu bash', exp: 'Run container interactively with bash' },
+        { cmd: 'docker ps -a', exp: 'List all containers (running + stopped)' },
+        { cmd: 'docker stop container_id', exp: 'Gracefully stop a container' },
+        { cmd: 'docker rm container_id', exp: 'Remove a stopped container' },
+        { cmd: 'docker exec -it ctr bash', exp: 'Shell into a running container' },
+        { cmd: 'docker logs -f container_id', exp: 'Stream container logs' },
+        { cmd: 'docker inspect container_id', exp: 'Show full container metadata (JSON)' },
+      ]},
+      { title: 'Compose', cmds: [
+        { cmd: 'docker compose up -d', exp: 'Start all services in background' },
+        { cmd: 'docker compose down', exp: 'Stop and remove containers & networks' },
+        { cmd: 'docker compose logs -f svc', exp: 'Follow logs of a specific service' },
+        { cmd: 'docker compose ps', exp: 'Show status of compose services' },
+      ]},
+      { title: 'Cleanup', cmds: [
+        { cmd: 'docker system prune -a', exp: 'Remove all unused images, containers, networks' },
+        { cmd: 'docker volume prune', exp: 'Remove all unused volumes' },
+      ]},
+    ]
+  },
+  kubernetes: {
+    icon: '⚙️', color: 'rgba(50,108,229,.15)', name: 'Kubernetes',
+    desc: 'Container orchestration — deploy, scale, self-heal',
+    tip: '💡 Tip: Always set resource requests & limits. Use readiness/liveness probes to prevent traffic to unhealthy pods.',
+    sections: [
+      { title: 'Cluster Info', cmds: [
+        { cmd: 'kubectl cluster-info', exp: 'Show cluster master and service URLs' },
+        { cmd: 'kubectl get nodes', exp: 'List all nodes and their status' },
+        { cmd: 'kubectl get ns', exp: 'List all namespaces' },
+        { cmd: 'kubectl config get-contexts', exp: 'List all kubeconfig contexts' },
+        { cmd: 'kubectl config use-context ctx', exp: 'Switch active kubeconfig context' },
+      ]},
+      { title: 'Workloads', cmds: [
+        { cmd: 'kubectl get pods -n namespace', exp: 'List pods in a namespace' },
+        { cmd: 'kubectl get pods -A', exp: 'List pods in all namespaces' },
+        { cmd: 'kubectl describe pod pod-name', exp: 'Show detailed pod info & events' },
+        { cmd: 'kubectl logs -f pod-name', exp: 'Stream pod logs' },
+        { cmd: 'kubectl exec -it pod-name -- bash', exp: 'Shell into a running pod' },
+        { cmd: 'kubectl delete pod pod-name', exp: 'Force delete / restart a pod' },
+      ]},
+      { title: 'Deployments', cmds: [
+        { cmd: 'kubectl apply -f manifest.yaml', exp: 'Apply/update resources from YAML' },
+        { cmd: 'kubectl get deploy -n ns', exp: 'List deployments in namespace' },
+        { cmd: 'kubectl rollout status deploy/name', exp: 'Watch rollout progress' },
+        { cmd: 'kubectl rollout undo deploy/name', exp: 'Rollback to previous revision' },
+        { cmd: 'kubectl scale deploy/name --replicas=3', exp: 'Manually scale a deployment' },
+        { cmd: 'kubectl set image deploy/name c=img:tag', exp: 'Update container image' },
+      ]},
+      { title: 'Services & Config', cmds: [
+        { cmd: 'kubectl get svc,ing -A', exp: 'List all services and ingresses' },
+        { cmd: 'kubectl get cm,secret -n ns', exp: 'List ConfigMaps and Secrets' },
+        { cmd: 'kubectl port-forward svc/name 8080:80', exp: 'Forward local port to service' },
+      ]},
+    ]
+  },
+  jenkins: {
+    icon: '🔧', color: 'rgba(249,168,37,.15)', name: 'Jenkins',
+    desc: 'Open-source CI/CD automation server',
+    tip: '💡 Tip: Use shared libraries for DRY pipelines. Always archive artefacts and publish test results so failures are traceable.',
+    sections: [
+      { title: 'Declarative Pipeline Skeleton', cmds: [
+        { cmd: "pipeline { agent any\n  stages {\n    stage('Build') { steps { sh 'mvn package' } }\n    stage('Test')  { steps { sh 'mvn test'    } }\n    stage('Deploy'){ steps { sh './deploy.sh' } }\n  }\n}", exp: 'Minimal declarative Jenkinsfile with 3 stages' },
+      ]},
+      { title: 'Common Steps', cmds: [
+        { cmd: 'sh "docker build -t app:${BUILD_NUMBER} ."', exp: 'Build Docker image with build number tag' },
+        { cmd: "withCredentials([usernamePassword(credentialsId: 'gcr', ...)]) { ... }", exp: 'Inject credentials securely into a step' },
+        { cmd: 'archiveArtifacts artifacts: "**/*.jar"', exp: 'Archive build artefacts for download' },
+        { cmd: 'junit "target/surefire-reports/**/*.xml"', exp: 'Publish JUnit test results' },
+        { cmd: 'stash includes: "dist/**", name: "build"', exp: 'Stash files to share between stages/agents' },
+        { cmd: 'unstash "build"', exp: 'Restore stashed files in another stage' },
+      ]},
+      { title: 'Environment & Triggers', cmds: [
+        { cmd: 'environment { APP_ENV = "prod" }', exp: 'Declare pipeline-level env vars' },
+        { cmd: "triggers { cron('H 2 * * 1-5') }", exp: 'Schedule pipeline (weekdays at ~2 AM)' },
+        { cmd: "triggers { pollSCM('H/5 * * * *') }", exp: 'Poll SCM every 5 minutes for changes' },
+        { cmd: 'when { branch "main" }', exp: 'Run stage only on main branch' },
+      ]},
+      { title: 'Post Actions', cmds: [
+        { cmd: 'post { success { slackSend message: "✅ Build OK" } }', exp: 'Notify Slack on success' },
+        { cmd: 'post { failure { mail to: "team@co.com", subject: "FAILED" } }', exp: 'Email team on failure' },
+        { cmd: 'post { always { cleanWs() } }', exp: 'Clean workspace after every run' },
+      ]},
+    ]
+  },
+  terraform: {
+    icon: '🏗️', color: 'rgba(123,66,188,.15)', name: 'Terraform',
+    desc: 'Infrastructure as Code — provision cloud resources declaratively',
+    tip: '💡 Tip: Always run `terraform plan` before `apply`. Use remote state (S3 + DynamoDB lock) in teams to avoid conflicts.',
+    sections: [
+      { title: 'Core Workflow', cmds: [
+        { cmd: 'terraform init', exp: 'Initialise working dir, download providers' },
+        { cmd: 'terraform validate', exp: 'Validate configuration syntax' },
+        { cmd: 'terraform fmt -recursive', exp: 'Auto-format all .tf files' },
+        { cmd: 'terraform plan -out=tfplan', exp: 'Preview changes, save plan to file' },
+        { cmd: 'terraform apply tfplan', exp: 'Apply saved plan (no prompt)' },
+        { cmd: 'terraform destroy', exp: 'Destroy all managed infrastructure' },
+      ]},
+      { title: 'State Management', cmds: [
+        { cmd: 'terraform state list', exp: 'List all resources in state' },
+        { cmd: 'terraform state show aws_instance.web', exp: 'Show details of a state resource' },
+        { cmd: 'terraform state rm resource.name', exp: 'Remove resource from state (not cloud)' },
+        { cmd: 'terraform import aws_s3_bucket.b bucket-id', exp: 'Import existing cloud resource into state' },
+        { cmd: 'terraform refresh', exp: 'Sync state with real infrastructure' },
+      ]},
+      { title: 'Workspace & Modules', cmds: [
+        { cmd: 'terraform workspace new staging', exp: 'Create a new workspace (environment)' },
+        { cmd: 'terraform workspace select prod', exp: 'Switch to prod workspace' },
+        { cmd: 'terraform workspace list', exp: 'List all workspaces' },
+        { cmd: 'terraform get -update', exp: 'Download / update modules' },
+        { cmd: 'terraform output vpc_id', exp: 'Print a specific output value' },
+      ]},
+    ]
+  },
+  aws: {
+    icon: '☁️', color: 'rgba(255,153,0,.15)', name: 'AWS CLI',
+    desc: 'Amazon Web Services — EC2, S3, IAM, VPC, CloudWatch & more',
+    tip: '💡 Tip: Use IAM roles instead of access keys wherever possible. Enable MFA on all IAM users and rotate keys regularly.',
+    sections: [
+      { title: 'EC2', cmds: [
+        { cmd: 'aws ec2 describe-instances --region ap-south-1', exp: 'List all EC2 instances in a region' },
+        { cmd: 'aws ec2 start-instances --instance-ids i-xxx', exp: 'Start a stopped instance' },
+        { cmd: 'aws ec2 stop-instances --instance-ids i-xxx', exp: 'Stop a running instance' },
+        { cmd: 'aws ec2 describe-security-groups', exp: 'List all security groups' },
+      ]},
+      { title: 'S3', cmds: [
+        { cmd: 'aws s3 ls s3://bucket-name', exp: 'List contents of an S3 bucket' },
+        { cmd: 'aws s3 cp file.txt s3://bucket/', exp: 'Upload a file to S3' },
+        { cmd: 'aws s3 sync ./dist s3://bucket/', exp: 'Sync local folder to S3 bucket' },
+        { cmd: 'aws s3 rb s3://bucket --force', exp: 'Delete bucket and all its contents' },
+      ]},
+      { title: 'IAM', cmds: [
+        { cmd: 'aws iam list-users', exp: 'List all IAM users' },
+        { cmd: 'aws iam create-user --user-name devops', exp: 'Create a new IAM user' },
+        { cmd: 'aws iam attach-user-policy --user-name u --policy-arn arn:...', exp: 'Attach a managed policy to user' },
+        { cmd: 'aws sts get-caller-identity', exp: 'Show current authenticated identity' },
+      ]},
+      { title: 'CloudWatch & EKS', cmds: [
+        { cmd: 'aws logs tail /aws/lambda/fn --follow', exp: 'Stream CloudWatch log group' },
+        { cmd: 'aws eks update-kubeconfig --name cluster', exp: 'Configure kubectl for EKS cluster' },
+        { cmd: 'aws eks list-clusters', exp: 'List all EKS clusters in region' },
+      ]},
+    ]
+  },
+  gcp: {
+    icon: '🌍', color: 'rgba(66,133,244,.15)', name: 'GCP (gcloud)',
+    desc: 'Google Cloud Platform — GKE, GCR, Artifact Registry, Cloud Run',
+    tip: '💡 Tip: Use Workload Identity for GKE instead of service account keys — it removes the need to manage credentials files.',
+    sections: [
+      { title: 'Auth & Config', cmds: [
+        { cmd: 'gcloud auth login', exp: 'Authenticate with your Google account' },
+        { cmd: 'gcloud config set project PROJECT_ID', exp: 'Set active GCP project' },
+        { cmd: 'gcloud config list', exp: 'Show current gcloud config' },
+        { cmd: 'gcloud auth configure-docker gcr.io', exp: 'Configure Docker to push to GCR' },
+      ]},
+      { title: 'GKE', cmds: [
+        { cmd: 'gcloud container clusters list', exp: 'List all GKE clusters' },
+        { cmd: 'gcloud container clusters get-credentials CLUSTER --zone ZONE', exp: 'Configure kubectl for a GKE cluster' },
+        { cmd: 'gcloud container clusters create NAME --num-nodes=3', exp: 'Create a new GKE cluster' },
+        { cmd: 'gcloud container clusters resize NAME --num-nodes=5', exp: 'Resize cluster node pool' },
+      ]},
+      { title: 'Artifact Registry / GCR', cmds: [
+        { cmd: 'docker tag app gcr.io/PROJECT/app:tag', exp: 'Tag image for GCR' },
+        { cmd: 'docker push gcr.io/PROJECT/app:tag', exp: 'Push image to Google Container Registry' },
+        { cmd: 'gcloud artifacts repositories list', exp: 'List Artifact Registry repositories' },
+        { cmd: 'gcloud container images list --repository=gcr.io/PROJECT', exp: 'List images in GCR' },
+      ]},
+      { title: 'Compute & IAM', cmds: [
+        { cmd: 'gcloud compute instances list', exp: 'List all Compute Engine VMs' },
+        { cmd: 'gcloud iam service-accounts list', exp: 'List service accounts in project' },
+        { cmd: 'gcloud projects add-iam-policy-binding PROJECT --member=... --role=...', exp: 'Grant IAM role to member' },
+      ]},
+    ]
+  },
+  linux: {
+    icon: '🐧', color: 'rgba(137,224,81,.15)', name: 'Linux',
+    desc: 'Ubuntu / RHEL / Rocky — shell, system admin & DevOps ops',
+    tip: '💡 Tip: Use `tmux` or `screen` for long-running tasks over SSH. Always check `journalctl -xe` for service failures.',
+    sections: [
+      { title: 'File & Directory', cmds: [
+        { cmd: 'ls -lah /path', exp: 'List with human-readable sizes & hidden files' },
+        { cmd: 'find / -name "*.log" -mtime -7', exp: 'Find .log files modified in last 7 days' },
+        { cmd: 'tar -czf archive.tar.gz dir/', exp: 'Compress directory to gzip tarball' },
+        { cmd: 'tar -xzf archive.tar.gz', exp: 'Extract gzip tarball' },
+        { cmd: 'chmod 755 script.sh && chown user:grp f', exp: 'Set permissions and ownership' },
+        { cmd: 'ln -s /original /link', exp: 'Create a symbolic link' },
+      ]},
+      { title: 'Process & System', cmds: [
+        { cmd: 'ps aux | grep process', exp: 'Find running process by name' },
+        { cmd: 'top / htop', exp: 'Live CPU, memory, process monitor' },
+        { cmd: 'kill -9 PID', exp: 'Force-kill process by PID' },
+        { cmd: 'systemctl status|start|stop|restart svc', exp: 'Manage systemd services' },
+        { cmd: 'journalctl -u svc -f', exp: 'Follow logs for a systemd service' },
+        { cmd: 'df -hT && free -m', exp: 'Show disk usage and memory stats' },
+      ]},
+      { title: 'Networking', cmds: [
+        { cmd: 'ss -tlnp', exp: 'Show listening ports and owning process' },
+        { cmd: 'curl -I https://example.com', exp: 'Fetch HTTP headers only' },
+        { cmd: 'netstat -rn', exp: 'Show routing table' },
+        { cmd: 'iptables -L -n -v', exp: 'List firewall rules' },
+        { cmd: 'scp file user@host:/path', exp: 'Copy file to remote server over SSH' },
+        { cmd: 'ssh -i key.pem user@host', exp: 'SSH with private key file' },
+      ]},
+      { title: 'Package Management', cmds: [
+        { cmd: 'apt update && apt upgrade -y', exp: 'Update packages (Ubuntu/Debian)' },
+        { cmd: 'yum install -y package', exp: 'Install package (RHEL/Rocky/CentOS)' },
+        { cmd: 'dnf update -y', exp: 'Update packages (RHEL 8+ / Rocky)' },
+      ]},
+    ]
+  },
+  sonarqube: {
+    icon: '🛡️', color: 'rgba(203,23,55,.15)', name: 'SonarQube',
+    desc: 'Code quality & security scanning — static analysis for CI/CD',
+    tip: '💡 Tip: Set Quality Gates as required checks in Jenkins/GitHub. A failed Quality Gate should block the merge/deploy.',
+    sections: [
+      { title: 'Scanner CLI', cmds: [
+        { cmd: 'sonar-scanner -Dsonar.projectKey=my-app \\\n  -Dsonar.sources=. \\\n  -Dsonar.host.url=http://sonar:9000 \\\n  -Dsonar.login=TOKEN', exp: 'Run analysis from CLI (generic project)' },
+        { cmd: 'mvn sonar:sonar -Dsonar.login=TOKEN', exp: 'Run Maven project analysis' },
+        { cmd: 'gradle sonarqube -Dsonar.login=TOKEN', exp: 'Run Gradle project analysis' },
+      ]},
+      { title: 'Jenkins Integration', cmds: [
+        { cmd: "withSonarQubeEnv('MySonarServer') { sh 'mvn sonar:sonar' }", exp: 'Wrap build step with SonarQube env from Jenkins credentials' },
+        { cmd: "timeout(time:5,unit:'MINUTES') { waitForQualityGate abortPipeline: true }", exp: 'Wait for Quality Gate result; fail pipeline if gate fails' },
+      ]},
+      { title: 'sonar-project.properties', cmds: [
+        { cmd: 'sonar.projectKey=my-project', exp: 'Unique project identifier in SonarQube' },
+        { cmd: 'sonar.sources=src', exp: 'Source code directories to scan' },
+        { cmd: 'sonar.exclusions=**/test/**,**/*.spec.js', exp: 'Exclude paths from analysis' },
+        { cmd: 'sonar.coverage.exclusions=**/vendor/**', exp: 'Exclude paths from coverage metrics' },
+        { cmd: 'sonar.javascript.lcov.reportPaths=coverage/lcov.info', exp: 'Point to JS coverage report' },
+      ]},
+      { title: 'REST API (Admin)', cmds: [
+        { cmd: 'curl -u admin:pass http://sonar/api/projects/search', exp: 'List all projects via API' },
+        { cmd: 'curl -u admin:pass http://sonar/api/qualitygates/list', exp: 'List configured Quality Gates' },
+        { cmd: 'curl -u admin:pass "http://sonar/api/issues/search?projectKeys=key"', exp: 'Fetch open issues for a project' },
+      ]},
+    ]
+  },
+};
+
+// ── MODAL LOGIC ──
+const overlay = document.getElementById('techModal');
+const modalClose = document.getElementById('modalClose');
+
+function buildModal(key) {
+  const d = techData[key];
+  if (!d) return;
+  document.getElementById('modalIcon').style.background = d.color;
+  document.getElementById('modalIcon').textContent = d.icon;
+  document.getElementById('modalName').textContent = d.name;
+  document.getElementById('modalDesc').textContent = d.desc;
+  const body = document.getElementById('modalBody');
+  body.innerHTML = '';
+  // tip
+  if (d.tip) {
+    const tip = document.createElement('div');
+    tip.className = 'modal-tip';
+    tip.innerHTML = d.tip;
+    body.appendChild(tip);
+  }
+  d.sections.forEach(sec => {
+    const wrap = document.createElement('div');
+    const title = document.createElement('div');
+    title.className = 'cheat-section-title';
+    title.textContent = sec.title;
+    wrap.appendChild(title);
+    const list = document.createElement('div');
+    list.className = 'cmd-list';
+    sec.cmds.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'cmd-row';
+      const left = document.createElement('div');
+      const code = document.createElement('div');
+      code.className = 'cmd-code';
+      code.textContent = c.cmd;
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-btn';
+      copyBtn.innerHTML = '<i class="fas fa-copy"></i> copy';
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(c.cmd).then(() => {
+          copyBtn.innerHTML = '<i class="fas fa-check"></i> copied!';
+          setTimeout(() => { copyBtn.innerHTML = '<i class="fas fa-copy"></i> copy'; }, 1800);
+        });
+      };
+      left.appendChild(code);
+      left.appendChild(copyBtn);
+      const right = document.createElement('div');
+      right.className = 'cmd-explain';
+      right.textContent = c.exp;
+      row.appendChild(left);
+      row.appendChild(right);
+      list.appendChild(row);
+    });
+    wrap.appendChild(list);
+    body.appendChild(wrap);
+  });
+}
+
+function openModal(key) {
+  buildModal(key);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.hero-tag[data-tech]').forEach(tag => {
+  tag.addEventListener('click', () => openModal(tag.dataset.tech));
+});
+modalClose.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── TYPEWRITER ──
+const cmds=['whoami --verbose','kubectl get pods -A','terraform plan','docker ps --all','ansible-playbook deploy.yml','gcloud compute instances list'];
+let ci=0,li=0,del=false;
+const te=document.getElementById('typedCmd');
+function type(){
+  const c=cmds[ci];
+  if(!del){te.textContent=c.slice(0,++li);if(li===c.length){del=true;setTimeout(type,1800);return;}}
+  else{te.textContent=c.slice(0,--li);if(li===0){del=false;ci=(ci+1)%cmds.length;}}
+  setTimeout(type,del?40:85);
+}
+type();
+</script>
+</body>
+</html>
